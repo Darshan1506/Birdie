@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice Feed settings</title>
+<style>
+  :root { --bg:#f3f5f8; --card:#ffffff; --ink:#1b2330; --muted:#5c6878; --line:#d9dee6; --signal:#0a7cff; --ok:#15803d; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f1720; --card:#16202b; --ink:#e7ecf2; --muted:#9aa6b4; --line:#2c3a48; --signal:#4da3ff; --ok:#4ade80; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 48px 20px 64px; }
+  header { display:flex; align-items:center; gap:14px; margin-bottom: 28px; }
+  .wave { display:flex; align-items:center; gap:4px; height:32px; }
+  .wave i { width:5px; border-radius:3px; background:var(--signal); }
+  .wave i:nth-child(1){height:12px} .wave i:nth-child(2){height:26px} .wave i:nth-child(3){height:18px}
+  .wave i:nth-child(4){height:30px} .wave i:nth-child(5){height:14px}
+  h1 { font-size: 30px; line-height:1.1; margin:0; letter-spacing:-.01em; }
+  .lede { color:var(--muted); margin: 4px 0 0; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; margin-top:16px; }
+  h2 { font-size:17px; margin:0 0 4px; }
+  .hint { color:var(--muted); font-size:14px; margin:0 0 14px; }
+  label { display:block; font-weight:600; font-size:14px; margin:14px 0 6px; }
+  input[type=text], input[type=password], select {
+    width:100%; padding:10px 12px; font:inherit; color:inherit; background:transparent;
+    border:1px solid var(--line); border-radius:8px;
+  }
+  input[type=range] { width:100%; accent-color: var(--signal); }
+  .check { display:flex; gap:10px; align-items:center; font-weight:600; font-size:14px; margin-top:4px; }
+  .check input { width:18px; height:18px; accent-color: var(--signal); }
+  :focus-visible { outline: 3px solid var(--signal); outline-offset: 2px; }
+  .row { display:flex; justify-content:space-between; font-size:14px; color:var(--muted); }
+  .actions { display:flex; align-items:center; gap:14px; margin-top:24px; }
+  button { font:inherit; font-weight:600; padding:10px 22px; border:0; border-radius:999px; background:var(--signal); color:#fff; cursor:pointer; }
+  #saved { color:var(--ok); font-size:14px; }
+  a { color: var(--signal); }
+  code { font-size: 13px; padding: 1px 5px; border: 1px solid var(--line); border-radius: 4px; }
+  [data-for] { display: none; }
+  [data-for].active { display: block; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <div>
+      <h1>Voice Feed</h1>
+      <p class="lede">Settings save as you change them. Reload x.com if it's already open.</p>
+    </div>
+  </header>
+
+  <section>
+    <h2>AI brain</h2>
+    <p class="hint">This makes it smart: it understands anything you say, answers questions, remembers the conversation, writes replies, and can do anything on X. All options below are free. Add more than one key and it switches automatically when one is busy or down.</p>
+    <div class="check" style="margin:4px 0 6px"><input id="aiEnabled" type="checkbox"><label for="aiEnabled" style="margin:0">Use AI (turn off for basic mode: fixed commands only, nothing sent to an AI)</label></div>
+    <p class="hint" style="margin:0 0 4px">You can also switch by voice: say “AI on” or “AI off”.</p>
+    <label for="provider">Main AI</label>
+    <select id="provider">
+      <option value="groq">Groq: free, fastest</option>
+      <option value="gemini">Google Gemini: free, can search the web</option>
+      <option value="ollama">Ollama: free, on your computer, private</option>
+      <option value="claude">Claude: paid, best quality</option>
+    </select>
+    <div class="check" style="margin-top:12px"><input id="autoBackup" type="checkbox"><label for="autoBackup" style="margin:0">Switch to another AI automatically if the main one fails</label></div>
+  </section>
+
+  <section>
+    <h2>Groq (recommended)</h2>
+    <p class="hint">Free, no card: go to <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a>, sign up, click Create API Key, paste it here. It also powers the sharper hearing below.</p>
+    <label for="groqKey">Groq API key</label>
+    <input id="groqKey" type="password" autocomplete="off" placeholder="gsk_…">
+    <label for="groqModel">Model</label>
+    <input id="groqModel" type="text" spellcheck="false">
+    <div class="check" style="margin-top:14px"><input id="whisper" type="checkbox"><label for="whisper" style="margin:0">Sharper hearing with Whisper (better for accents and Hinglish)</label></div>
+    <p class="hint" style="margin-top:6px">Short commands stay instant. Longer sentences, DMs and replies are re-checked by Whisper, which adds about half a second.</p>
+  </section>
+
+  <section>
+    <h2>Google Gemini (backup, web search)</h2>
+    <p class="hint">Free, no card: <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> → Create API key. If project creation fails, create a project at console.cloud.google.com first, then import it. Free-tier requests may be used by Google to improve its models.</p>
+    <label for="geminiKey">Gemini API key</label>
+    <input id="geminiKey" type="password" autocomplete="off" placeholder="AIza…">
+    <label for="geminiModel">Model</label>
+    <input id="geminiModel" type="text" spellcheck="false">
+  </section>
+
+  <section>
+    <h2>Ollama (offline backup)</h2>
+    <p class="hint">Install from <a href="https://ollama.com" target="_blank" rel="noopener">ollama.com</a>, then run <code>ollama pull llama3.2</code>. Private and unlimited, but no web search and needs a decent computer.</p>
+    <div class="check"><input id="ollamaBackup" type="checkbox"><label for="ollamaBackup" style="margin:0">Use Ollama as a last-resort backup</label></div>
+    <label for="ollamaModel">Model</label>
+    <input id="ollamaModel" type="text" spellcheck="false">
+    <label for="ollamaUrl">Address</label>
+    <input id="ollamaUrl" type="text" spellcheck="false">
+  </section>
+
+  <section>
+    <h2>Claude (optional, paid)</h2>
+    <p class="hint">Key from <a href="https://console.anthropic.com/" target="_blank" rel="noopener">console.anthropic.com</a>. Leave empty to stay free.</p>
+    <label for="apiKey">Claude API key</label>
+    <input id="apiKey" type="password" autocomplete="off" placeholder="sk-ant-…">
+    <label for="brainModel">Fast model</label>
+    <input id="brainModel" type="text" spellcheck="false">
+    <label for="model">Research model</label>
+    <input id="model" type="text" spellcheck="false">
+  </section>
+
+  <section>
+    <h2>Your writing style</h2>
+    <label for="styleNote">How you write (optional)</label>
+    <textarea id="styleNote" rows="3" placeholder="e.g. Casual, short, a bit funny. I write in English with some Hinglish." style="width:100%;padding:10px 12px;font:inherit;color:inherit;background:transparent;border:1px solid var(--line);border-radius:8px;resize:vertical"></textarea>
+    <p class="hint" style="margin-top:6px">Used when it writes replies, posts and DMs for you, so they sound like you.</p>
+  </section>
+
+  <section>
+    <h2>Listening</h2>
+    <p class="hint">A wake word stops it reacting to conversations around you. “Stop”, “send” and “cancel” always work without it.</p>
+    <div class="check"><input id="wakeWordEnabled" type="checkbox"><label for="wakeWordEnabled" style="margin:0">Require a wake word</label></div>
+    <label for="wakeWord">Wake word</label>
+    <input id="wakeWord" type="text">
+    <div class="check" style="margin-top:16px"><input id="talkOver" type="checkbox"><label for="talkOver" style="margin:0">I use headphones (lets you say “next”, “like” or “send” while it's talking)</label></div>
+    <label for="lang">Language</label>
+    <select id="lang">
+      <option value="en-US">English (US)</option>
+      <option value="en-IN">English (India)</option>
+      <option value="en-GB">English (UK)</option>
+      <option value="hi-IN">Hindi</option>
+      <option value="mr-IN">Marathi</option>
+      <option value="es-ES">Spanish</option>
+      <option value="fr-FR">French</option>
+      <option value="de-DE">German</option>
+    </select>
+    <p class="hint" style="margin-top:8px">Built-in commands are in English; other languages work through the AI.</p>
+  </section>
+
+  <section>
+    <h2>Voice</h2>
+    <p class="hint">“Natural” or “Online” voices sound the most human. Edge has the best ones.</p>
+    <label for="voiceName">Reading voice</label>
+    <select id="voiceName"><option value="">Automatic (best available)</option></select>
+    <button id="tryVoice" type="button" style="margin-top:12px;background:transparent;color:var(--signal);border:1px solid var(--line)">Play a sample</button>
+  </section>
+
+  <section>
+    <h2>Speed</h2>
+    <label for="scrollSpeed">Starting scroll speed</label>
+    <input id="scrollSpeed" type="range" min="0.5" max="10" step="0.5">
+    <div class="row"><span>Slow</span><span id="scrollSpeedVal"></span><span>Fast</span></div>
+    <label for="voiceRate">Reading voice speed</label>
+    <input id="voiceRate" type="range" min="0.7" max="1.8" step="0.05">
+    <div class="row"><span>Slow</span><span id="voiceRateVal"></span><span>Fast</span></div>
+  </section>
+
+  <div class="actions"><button id="save" type="button">Save settings</button><span id="saved" role="status"></span></div>
+</main>
+<script src="options.js"></script>
+</body>
+</html>
