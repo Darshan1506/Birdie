@@ -100,3 +100,4 @@ Written in TypeScript; `npm run build` bundles it into `dist/`, the folder you l
 Open this folder in Claude Code. It reads `CLAUDE.md` automatically, which points it to `PRD.md`. Try asking it to work through the roadmap in PRD section 13, for example: "Implement roadmap item 1 from the PRD."
 
 MIT License.
+# Birdie
